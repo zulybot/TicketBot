@@ -1,5 +1,3 @@
-### Star (Please)
-
 ### **How to use?**
 - Download the repo, rename a `.env.example` file to `.env`, and change properties.
 - You need to change guildOnly to your guild id or simply delete this line.
