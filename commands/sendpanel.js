@@ -6,23 +6,21 @@ module.exports = class extends Command {
     super(...args, {
       name: "sendpanel",
       description: "Send panel :O",
-      guildOnly: "747526604116459691",
+      guildOnly: "880174783294214184",
       userRequiredPermissions: "ADMINISTRATOR",   
     })
   }
 
   async run({client, channel, respond}) {
     let embed = new MessageEmbed()
-      .setAuthor(process.env.embedAuthor)
-      .setDescription(process.env.embedDescription)
-      .setColor(process.env.embedColor)
-      .setFooter(process.env.embedFooter);
-
-    if (process.env.embedTimestampEnabled === true) embed.setTimestamp()
+      .setTitle(`<:zu_ticket:890950181120507935> Atendimento | ${client.user.username}`)
+      .setDescription('> Para criar um ticket clique no botão abaixo')
+      .setColor('BLUE')
 
     let button = new MessageButton()
-      .setLabel("Support")
-      .setStyle("red")
+      .setEmoji("📩")
+      .setLabel("Criar Ticket")
+      .setStyle("blurple")
       .setCustomId("support_ticket_create")
 
     respond({

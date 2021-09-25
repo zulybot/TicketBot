@@ -16,13 +16,13 @@ module.exports = {
             let already = allChannels.some(v => buttonMember.user.id == v)
             if(already === true) {
                 return button.reply.send({ 
-                    content: "Sorry, you already have ticket.",
+                    content: "✅ **|** Desculpa, você já tem um ticket.",
                     ephemeral: true
                 })
             }
 
             button.reply.send({
-                content: "Creating ticket...",
+                content: "✅ **|** Criando ticket...",
                 ephemeral: true
             })
 
@@ -48,31 +48,29 @@ module.exports = {
 
             let supportEmbed = new MessageEmbed()
                 .setColor("#32a852")
-                .setDescription("Support will be with you shortly.\nTo close this ticket react with :lock:")
-                .setFooter("By Hyro#8938")
-                .setTimestamp();
+                .setDescription("Suporte chegará em breve.\nPara fechar clique no botão 🔒")
 
             let supportButton = new MessageButton()
-                .setLabel("Close")
+                .setLabel("Fechar")
                 .setEmoji("🔒")
                 .setStyle("gray")
                 .setCustomId(`ticket_close_${ticketChannel.id}`)
 
             let claimButton = new MessageButton()
-                .setLabel("Claim")
+                .setLabel("Resgatar")
                 .setEmoji("📌")
                 .setStyle("gray")
                 .setCustomId(`ticket_claim_${ticketChannel.id}`)   
             
             ticketChannel.send({
-                content: `<@${buttonMember.user.id}> Welcome!`, 
+                content: `<@${buttonMember.user.id}> Bem-vindo! | <@&880406878029492294> / <@&880406988486479883>`, 
                 embeds: supportEmbed, 
                 allowedMentions: { parse: ["users"] },
                 components: new MessageActionRow().addComponent(supportButton).addComponent(claimButton)
             })
 
             button.reply.edit({
-                content: `Your ticket has been created. ${ticketChannel}`,
+                content: `✅ **|** Seu ticket foi criado ${ticketChannel}`,
                 ephemeral: true
             })
         }
@@ -81,10 +79,10 @@ module.exports = {
             let ticketChannel = button.channel;
             let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-")[1]) || client.users.cache.get(ticketChannel.name.split("ticket-claimed-")[1]) || client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1])
 
-            let yes = new MessageButton().setLabel("Yes").setEmoji("✅").setStyle("gray").setCustomId(`ticket_close_yes_${buttonMember.user.id}`)
-            let no = new MessageButton().setLabel("No").setEmoji("❌").setStyle("gray").setCustomId(`ticket_close_no_${buttonMember.user.id}`)
+            let yes = new MessageButton().setLabel("Sim").setEmoji("✅").setStyle("gray").setCustomId(`ticket_close_yes_${buttonMember.user.id}`)
+            let no = new MessageButton().setLabel("Não").setEmoji("❌").setStyle("gray").setCustomId(`ticket_close_no_${buttonMember.user.id}`)
 
-            let msg = await ticketChannel.send({content: `${buttonMember.user} Do you really want close ticket?`, components: new MessageActionRow().addComponent(yes).addComponent(no)})
+            let msg = await ticketChannel.send({content: `${buttonMember.user} Você deseja mesmo fechar esse ticket?`, components: new MessageActionRow().addComponent(yes).addComponent(no)})
             let filter = (interaction) => interaction.isButton() && buttonMember.user.id == interaction.member.user.id
             let collected = await msg.awaitMessageComponents(filter, { max: 1, time: 60000, errors: ["time"] })
             if(!collected || collected.size < 0) return msg.delete(); 
@@ -92,22 +90,22 @@ module.exports = {
 
             let closedEmbed = new MessageEmbed()
                 .setColor("#4287f5")
-                .setDescription(`Ticket closed by <@${collected.first().member.user.id}>\nTicket created by <@${createdBy.id}>\n\n🔓 Reopen Ticket\n📛 Delete Ticket\n💨 Archive Ticket\n💫 Transcript Ticket`)
+                .setDescription(`> Ticket fechado por <@${collected.first().member.user.id}>\n> Ticket criado por <@${createdBy.id}>\n\n🔓 Reabrir Ticket\n📛 Deletar Ticket\n💨 Arquivar Ticket\n💫 Salvar o Transcript`)
 
             let reopen = new MessageButton()
-                .setLabel("Reopen")
+                .setLabel("Reabrir")
                 .setCustomId(`ticket_reopen_${ticketChannel.id}`)
                 .setEmoji("🔓")
                 .setStyle("green")
             
             let deleteButton = new MessageButton()
-                .setLabel("Delete")
+                .setLabel("Fechar")
                 .setCustomId(`ticket_delete_${ticketChannel.id}`)
                 .setEmoji("📛")
                 .setStyle("red")
 
             let archiveButton = new MessageButton()
-                .setLabel("Archive")
+                .setLabel("Arquivar")
                 .setCustomId(`ticket_archive_${ticketChannel.id}`)
                 .setEmoji("💨")
                 .setStyle("gray")
@@ -150,9 +148,7 @@ module.exports = {
 
             let supportEmbed = new MessageEmbed()
                 .setColor("#32a852")
-                .setDescription("Support will be with you shortly.\nTo close this ticket react with :lock:")
-                .setFooter("By Hyro#8938")
-                .setTimestamp();
+                .setDescription("Suporte chegará em breve.\nPara fechar clique no botão 🔒")
 
             let supportButton = new MessageButton()
                 .setLabel("Close")
@@ -185,7 +181,7 @@ module.exports = {
                 ]
             })
 
-            ticketChannel.send({content: `<@${createdBy.id}> Welcome back!`, embeds: supportEmbed, components: new MessageActionRow().addComponents([supportButton, claimButton])})
+            ticketChannel.send({content: `<@${createdBy.id}> Bem-vindo de volta! | <@&880406878029492294> / <@&880406988486479883>`, embeds: supportEmbed, components: new MessageActionRow().addComponents([supportButton, claimButton])})
         }
 
         if(button.customId == `ticket_delete_${button.channel.id}`) {
@@ -193,7 +189,7 @@ module.exports = {
 
             let deleteEmbed = new MessageEmbed()
                 .setColor("#f54257")
-                .setDescription("Ticket deleted in 5s")
+                .setDescription("Ticket será deletado 5s")
             
             ticketChannel.send({embeds: deleteEmbed})
             setTimeout(() => {ticketChannel.delete()}, 5000);
@@ -209,7 +205,7 @@ module.exports = {
 
             let archiveEmbed = new MessageEmbed()
                 .setColor("#f5bf42")
-                .setDescription("The ticket has been archived. You can just delete it.")
+                .setDescription("Esse ticket foi arquivado, você pode deleta-lo.")
 
             button.channel.edit({
                 name: `ticket-archived-${createdBy}`,
@@ -241,9 +237,15 @@ module.exports = {
             if(!systemMessages) systemMessages = "No messages were found."
 
             let attch = new MessageAttachment(Buffer.from(systemMessages), `saved_transcript_${button.channel.id}.txt`)
-            ticketChannel.send({
-                content: `${button.clicker.user} your transcript is ready!`,
+            
+            let transcript = await client.channels.cache.get('880494976914567240')
+
+            transcript.send({
+                content: `✅ ${button.clicker.user} **|** Transcript pronto!`,
                 attachments: [attch]
+            })
+            ticketChannel.send({
+                content: `✅ ${button.clicker.user} **|** Ticket salvo com sucesso!`
             })
         }
 
@@ -255,7 +257,7 @@ module.exports = {
 
             let claimEmbed = new MessageEmbed()
                 .setColor("#f5bf42")
-                .setDescription(`${button.clicker.user} claimed this ticket.`)
+                .setDescription(`${button.clicker.user} pegou esse ticket.`)
 
             button.channel.edit({
                 name: `ticket-claimed-${createdBy}`,

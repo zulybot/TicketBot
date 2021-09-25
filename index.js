@@ -9,14 +9,17 @@ const client = new GCommandsClient({
     commands: {
         slash: 'both',
         context: 'false',
-        prefix: '.'
+        prefix: 'z?'
     },
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_INTEGRATIONS]
 });
 
 client.on("ready", () => {
     console.log("som")
-
+    setInterval(() => {
+        const ram = process.memoryUsage().rss / 1024 / 1024;
+        console.log(`[RAM] ${ram.toFixed(2)}mb`);
+    }, 3000);
     client.tickets = {
         category: process.env.ticketCategory,
         closedCategory: process.env.ticketClosedCategory,

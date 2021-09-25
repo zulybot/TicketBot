@@ -1,4 +1,7 @@
-{
+{ 
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^13.1.0",
