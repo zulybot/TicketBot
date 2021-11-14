@@ -3,9 +3,9 @@ const { Intents } = require('discord.js')
 const { GCommandsClient } = require("gcommands");
 
 const client = new GCommandsClient({
-    cmdDir: "commands/",
+    cmdDir: "commands",
     eventDir: "events/",
-    language: "english",
+    language: "portuguese",
     commands: {
         slash: 'both',
         context: 'false',
@@ -15,7 +15,7 @@ const client = new GCommandsClient({
 });
 
 client.on("ready", () => {
-    console.log("som")
+    console.log("[READY] I'm ready!")
     setInterval(() => {
         const ram = process.memoryUsage().rss / 1024 / 1024;
         console.log(`[RAM] ${ram.toFixed(2)}mb`);

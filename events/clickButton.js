@@ -65,7 +65,7 @@ module.exports = {
             ticketChannel.send({
                 content: `<@${buttonMember.user.id}> Bem-vindo! | <@&880406878029492294> / <@&880406988486479883>`, 
                 embeds: supportEmbed, 
-                allowedMentions: { parse: ["users"] },
+                allowedMentions: { parse: ["users", "roles"] },
                 components: new MessageActionRow().addComponent(supportButton).addComponent(claimButton)
             })
 
@@ -82,7 +82,7 @@ module.exports = {
             let yes = new MessageButton().setLabel("Sim").setEmoji("✅").setStyle("gray").setCustomId(`ticket_close_yes_${buttonMember.user.id}`)
             let no = new MessageButton().setLabel("Não").setEmoji("❌").setStyle("gray").setCustomId(`ticket_close_no_${buttonMember.user.id}`)
 
-            let msg = await ticketChannel.send({content: `${buttonMember.user} Você deseja mesmo fechar esse ticket?`, components: new MessageActionRow().addComponent(yes).addComponent(no)})
+            let msg = await ticketChannel.send({content: `${buttonMember.user} Você deseja mesmo fechar esse ticket?`,  allowedMentions: { parse: ["users", "roles"] }, components: new MessageActionRow().addComponent(yes).addComponent(no)})
             let filter = (interaction) => interaction.isButton() && buttonMember.user.id == interaction.member.user.id
             let collected = await msg.awaitMessageComponents(filter, { max: 1, time: 60000, errors: ["time"] })
             if(!collected || collected.size < 0) return msg.delete(); 
@@ -135,7 +135,7 @@ module.exports = {
                 ]
             })
 
-            button.channel.send({embeds: closedEmbed, components: new MessageActionRow().addComponents([reopen, deleteButton, archiveButton, transcriptButton])})
+            button.channel.send({embeds: closedEmbed, allowedMentions: { parse: ["users", "roles"] }, components: new MessageActionRow().addComponents([reopen, deleteButton, archiveButton, transcriptButton])})
         }
 
         if(button.customId == `ticket_reopen_${button.channel.id}`) {
@@ -151,13 +151,13 @@ module.exports = {
                 .setDescription("Suporte chegará em breve.\nPara fechar clique no botão 🔒")
 
             let supportButton = new MessageButton()
-                .setLabel("Close")
+                .setLabel("Fechar")
                 .setEmoji("🔒")
                 .setStyle("gray")
                 .setCustomId(`ticket_close_${ticketChannel.id}`)
 
             let claimButton = new MessageButton()
-                .setLabel("Claim")
+                .setLabel("Resgatar")
                 .setEmoji("📌")
                 .setStyle("gray")
                 .setCustomId(`ticket_claim_${ticketChannel.id}`)
@@ -181,7 +181,7 @@ module.exports = {
                 ]
             })
 
-            ticketChannel.send({content: `<@${createdBy.id}> Bem-vindo de volta! | <@&880406878029492294> / <@&880406988486479883>`, embeds: supportEmbed, components: new MessageActionRow().addComponents([supportButton, claimButton])})
+            ticketChannel.send({content: `<@${createdBy.id}> Bem-vindo de volta! | <@&880406878029492294> / <@&880406988486479883>`, embeds: supportEmbed, allowedMentions: { parse: ["users", "roles"] }, components: new MessageActionRow().addComponents([supportButton, claimButton])})
         }
 
         if(button.customId == `ticket_delete_${button.channel.id}`) {
@@ -189,9 +189,9 @@ module.exports = {
 
             let deleteEmbed = new MessageEmbed()
                 .setColor("#f54257")
-                .setDescription("Ticket será deletado 5s")
+                .setDescription("Ticket será deletado em 5 segundos")
             
-            ticketChannel.send({embeds: deleteEmbed})
+            ticketChannel.send({embeds: deleteEmbed, allowedMentions: { parse: ["users", "roles"] },})
             setTimeout(() => {ticketChannel.delete()}, 5000);
         }
 
@@ -226,7 +226,7 @@ module.exports = {
                 ]
             })
 
-            button.channel.send({embeds: archiveEmbed})
+            button.channel.send({embeds: archiveEmbed, allowedMentions: { parse: ["users", "roles"] },})
         }
 
         if(button.customId == `ticket_transcript_${button.channel.id}`) {
@@ -242,10 +242,12 @@ module.exports = {
 
             transcript.send({
                 content: `✅ ${button.clicker.user} **|** Transcript pronto!`,
-                attachments: [attch]
+                attachments: [attch],
+                allowedMentions: { parse: ["users", "roles"] }
             })
             ticketChannel.send({
-                content: `✅ ${button.clicker.user} **|** Ticket salvo com sucesso!`
+                content: `✅ ${button.clicker.user} **|** Ticket salvo com sucesso!`,
+                allowedMentions: { parse: ["users", "roles"] }
             })
         }
 
@@ -264,7 +266,7 @@ module.exports = {
                 parentID: client.tickets.claimedCategory
             })
 
-            button.channel.send({embeds: claimEmbed})
+            button.channel.send({embeds: claimEmbed, allowedMentions: { parse: ["users", "roles"] },})
         }    
         
         function msToTime(ms) {
